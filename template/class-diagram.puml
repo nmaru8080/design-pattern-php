@@ -1,0 +1,67 @@
+@startuml Template Method Pattern
+!theme plain
+skinparam classAttributeIconSize 0
+
+package "DesignPattern\\Template" {
+    
+    abstract class AbstractDisplay {
+        - {field} data : array
+        + {method} __construct(data: mixed)
+        + {method} display() : void {テンプレートメソッド}
+        + {method} getData() : array
+        --
+        {abstract} # {method} displayHeader() : void
+        {abstract} # {method} displayBody() : void
+        {abstract} # {method} displayFooter() : void
+    }
+    
+    class ListDisplay {
+        # {method} displayHeader() : void
+        # {method} displayBody() : void
+        # {method} displayFooter() : void
+    }
+    
+    class TableDisplay {
+        # {method} displayHeader() : void
+        # {method} displayBody() : void
+        # {method} displayFooter() : void
+    }
+    
+    class Client <<script>> {
+        + {method} main()
+    }
+    
+    AbstractDisplay <|-- ListDisplay : extends
+    AbstractDisplay <|-- TableDisplay : extends
+    Client ..> AbstractDisplay : uses
+    Client ..> ListDisplay : creates
+    Client ..> TableDisplay : creates
+}
+
+note right of AbstractDisplay::display
+    <b>テンプレートメソッド</b>
+    アルゴリズムの骨格を定義
+    displayHeader()
+    displayBody()
+    displayFooter()
+    の順で実行
+end note
+
+note right of AbstractDisplay
+    <b>抽象クラス</b>
+    テンプレートメソッドパターンの
+    抽象クラス（AbstractClass）
+    サブクラスに実装を委譲
+end note
+
+note right of ListDisplay
+    <b>具象クラス</b>
+    リスト形式（<dl>）で表示
+end note
+
+note right of TableDisplay
+    <b>具象クラス</b>
+    テーブル形式（<table>）で表示
+end note
+
+@enduml
